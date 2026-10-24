@@ -1,0 +1,65 @@
+{
+  "repository": "https://github.com/example/demo-project",
+  "violations": [
+    {
+      "rule_id": "SEC-001",
+      "category": "security",
+      "severity": "critical",
+      "file": "config.py",
+      "line": 12,
+      "description": "Hardcoded secret API key committed in configuration file.",
+      "evidence": "API_KEY = \"[REDACTED]\"",
+      "recommendation": "Remove hardcoded secret from repository history, revoke the key, and load credentials from environment variables or a secrets manager."
+    },
+    {
+      "rule_id": "CI-001",
+      "category": "github_actions_ci",
+      "severity": "high",
+      "file": ".github/workflows/ci.yml",
+      "line": 5,
+      "description": "Workflow configures overly permissive write-all permissions.",
+      "evidence": "permissions: write-all",
+      "recommendation": "Adopt the principle of least privilege by specifying only required workflow permissions (e.g. contents: read)."
+    },
+    {
+      "rule_id": "CI-002",
+      "category": "github_actions_ci",
+      "severity": "high",
+      "file": ".github/workflows/ci.yml",
+      "line": 18,
+      "description": "Test step execution masks build and test failures with continue-on-error.",
+      "evidence": "run: pytest\ncontinue-on-error: true",
+      "recommendation": "Remove continue-on-error: true from test execution jobs so regression failures properly fail CI gates."
+    },
+    {
+      "rule_id": "DEP-001",
+      "category": "dependency_management",
+      "severity": "medium",
+      "file": "requirements.txt",
+      "line": 1,
+      "description": "Unpinned package dependencies permit non-deterministic and breaking package updates.",
+      "evidence": "flask\nrequests",
+      "recommendation": "Pin package version constraints using semantic version bounds (e.g., flask>=3.0.0,<4.0.0)."
+    },
+    {
+      "rule_id": "CFG-001",
+      "category": "configuration",
+      "severity": "medium",
+      "file": "src/settings.py",
+      "line": 8,
+      "description": "Machine-specific hardcoded absolute path found in settings.",
+      "evidence": "DATA_DIR = \"/home/ubuntu/data\"",
+      "recommendation": "Use relative paths or configure directory paths through environment variables."
+    },
+    {
+      "rule_id": "HYG-001",
+      "category": "repository_hygiene",
+      "severity": "low",
+      "file": null,
+      "line": null,
+      "description": "Repository root lacks project documentation and usage instructions.",
+      "evidence": "No README or README.md discovered in repository root.",
+      "recommendation": "Add a comprehensive README.md describing project setup, prerequisites, testing, and contribution instructions."
+    }
+  ]
+}
