@@ -49,24 +49,7 @@ BINARY_EXTENSIONS = {
     ".eot",
 }
 
-# Regex to detect and mask obvious inline secret assignments
-SECRET_ASSIGNMENT_PATTERN = re.compile(
-    r'(?i)(["\']?[a-z0-9_]*(?:api[_-]?key|secret|token|password)[a-z0-9_]*["\']?\s*(?<![!=<>])[:=](?!=)\s*)'
-    r'(?:(["\'])(.*?)\2|([^\s"\'`,;#]+))'
-)
-
-
-def redact_secrets(text: str) -> str:
-    """Mask obvious inline secret assignments (API_KEY, SECRET, TOKEN, PASSWORD)."""
-
-    def _replace_match(match: re.Match[str]) -> str:
-        prefix = match.group(1)
-        quote = match.group(2)
-        if quote:
-            return f"{prefix}{quote}[REDACTED]{quote}"
-        return f"{prefix}[REDACTED]"
-
-    return SECRET_ASSIGNMENT_PATTERN.sub(_replace_match, text)
+from schemas import redact_secrets
 
 
 def clone_repo(repo_url: str) -> tempfile.TemporaryDirectory:
